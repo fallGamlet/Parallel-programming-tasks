@@ -1,42 +1,52 @@
 ﻿// See https://aka.ms/new-console-template for more information
 Console.WriteLine("Example for Task working");
 
-var thread1 = createThread();
-Console.WriteLine($"==> Thread1 state is {thread1.ThreadState}");
-thread1.Start();
-Console.WriteLine($"==> Thread1 state is {thread1.ThreadState}");
-thread1.Join();
-Console.WriteLine($"==> Thread1 state is {thread1.ThreadState}");
-
-
-var task1 = createTask();
-Console.WriteLine($"==> Task1 state is {task1.Status}");
-task1.Start();
-Console.WriteLine($"==> Task1 state is {task1.Status}");
-task1.Wait();
-Console.WriteLine($"==> Task1 state is {task1.Status}");
-
-
-var cancellationTokenSource = new CancellationTokenSource();
-var task2 = createTask2(cancellationTokenSource.Token);
-Console.WriteLine($"==> Task2 state is {task2.Status}");
-task2.Start();
-
-var task3 = task2
- .ContinueWith<string>((task) => {
-     if (task.IsCanceled) {
-        Console.WriteLine($"Canceled...");
-        return "canceled";
-    }
-    Console.WriteLine($"Continue after {task.Id} {task.Status}, {task.Result}");
-    return "Continued";
-}, cancellationTokenSource.Token);
-
-Thread.Sleep(200);
-cancellationTokenSource.Cancel();
-Console.WriteLine($"==> Task2 state is {task2.Status}");
+runExampleForStatusesOfThread();
+runExampleForStatusesOfTask();
+runExampleForCancelableTask();
 
 Thread.Sleep(1000);
+Console.WriteLine("Program finished");
+
+
+void runExampleForStatusesOfThread() {
+    var thread1 = createThread();
+    Console.WriteLine($"==> Thread1 state is {thread1.ThreadState}");
+    thread1.Start();
+    Console.WriteLine($"==> Thread1 state is {thread1.ThreadState}");
+    thread1.Join();
+    Console.WriteLine($"==> Thread1 state is {thread1.ThreadState}");
+}
+
+void runExampleForStatusesOfTask() {
+    var task1 = createTask();
+    Console.WriteLine($"==> Task1 state is {task1.Status}");
+    task1.Start();
+    Console.WriteLine($"==> Task1 state is {task1.Status}");
+    task1.Wait();
+    Console.WriteLine($"==> Task1 state is {task1.Status}");
+}
+
+void runExampleForCancelableTask() {
+    var cancellationTokenSource = new CancellationTokenSource();
+    var task2 = createTask2(cancellationTokenSource.Token);
+    Console.WriteLine($"==> Task2 state is {task2.Status}");
+    task2.Start();
+
+    var task3 = task2
+    .ContinueWith<string>((task) => {
+        if (task.IsCanceled) {
+            Console.WriteLine($"Canceled...");
+            return "canceled";
+        }
+        Console.WriteLine($"Continue after {task.Id} {task.Status}, {task.Result}");
+        return "Continued";
+    }, cancellationTokenSource.Token);
+
+    Thread.Sleep(200);
+    cancellationTokenSource.Cancel();
+    Console.WriteLine($"==> Task2 state is {task2.Status}");
+}
 
 Thread createThread() {
     return new Thread(() => {
@@ -82,3 +92,4 @@ Task<string> createTask2(CancellationToken cancellationToken) {
 
     return new Task<string>(action1, cancellationToken);
 }
+
