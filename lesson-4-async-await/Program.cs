@@ -93,13 +93,13 @@ void ExampleForAyncAwait() {
     Console.WriteLine($"Start ExampleForAyncAwait");
     var resultList = new List<string>();
     try {
-        var task = Task.Run(() => {
-            var result1 = GenerateIdAsync(1);
-            resultList.Add(result1.Result);
-            var result2 = GenerateIdAsync(-1);
-            resultList.Add(result2.Result);
-            var result3 = GenerateIdAsync(7);
-            resultList.Add(result3.Result);
+        var task = Task.Run(async () => {
+            var result1 = await GenerateIdAsync(1);
+            resultList.Add(result1);
+            var result2 = await GenerateIdAsync(-1);
+            resultList.Add(result2);
+            var result3 = await GenerateIdAsync(7);
+            resultList.Add(result3);
         });
         task.Wait();
     } catch(Exception e) {
