@@ -13,6 +13,7 @@ filterMultyPrintOptimized(list);
 filterMultyPrintLinq(list);
 linqMethodsExample(list);
 
+// print into console all items of list with usage FOR loop
 void printListWithForLoop<T>(List<T> list) 
 {
     var builder = new StringBuilder();
@@ -24,6 +25,7 @@ void printListWithForLoop<T>(List<T> list)
     Console.WriteLine($"ForLoop \nlist => {builder.ToString()}");
 }
 
+// print into console all items of list with usage Linq.ForEach
 void printListWithLinqFor<T>(List<T> list) 
 {
     var builder = new StringBuilder();
@@ -35,6 +37,7 @@ void printListWithLinqFor<T>(List<T> list)
     Console.WriteLine($"Linq.ForEach \nlist => {builder.ToString()}");
 }
 
+// example of filtering source list and transform each of filtered items with usage FOR loops
 void filterMultyPrint(List<int> list) 
 {
     var filteredList = new List<int>();
@@ -53,6 +56,7 @@ void filterMultyPrint(List<int> list)
     printListWithForLoop(multipleList);
 }
 
+// example of filtering source list and transform each of filtered items with usage one FOR loop
 void filterMultyPrintOptimized(List<int> list) 
 {
     var resultList = new List<int>();
@@ -67,10 +71,13 @@ void filterMultyPrintOptimized(List<int> list)
     printListWithForLoop(resultList);
 }
 
+// example of filtering source list and transform each of filtered items with usage Linq methods
 void filterMultyPrintLinq(List<int> list) 
 {
     var resultList = list
+        // filter items of list
         .Where(item => item % 2 == 0)
+        // convert each item of list
         .Select(item => 2 * item)
         .ToList();
 
