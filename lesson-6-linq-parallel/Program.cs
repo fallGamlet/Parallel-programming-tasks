@@ -35,8 +35,6 @@ groups.ToList().ForEach(group =>
     var threadId = group.Key;
     var builder = new StringBuilder();
     var results = group.Select(value => value.key);
-    // var text = String.Join(", ", results);
-    // Console.WriteLine($"{threadId} handle {results.Count()} items => <{text}>");
     Console.WriteLine($"{threadId} handled {results.Count()} items");
 });
 
